@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <style>
+            :root {
+                font-size: 12px;
+                font-family:Arial, Helvetica, sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body,
+            div,
+            h1,h2,h3,h4,h5,h6,
+            p,
+            input [input="text"] {
+                margin: 0;
+                padding: 0;
+            }
+
+            html, body {
+                height: 100%;
+            }
+
+            #app {
+                background-color: #e9eaf0;
+                height: 100%;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .search-container {
+                background-color: #FFF;
+                padding: 1.5rem;
+                
+                border-radius: .7rem;
+                -webkit-border-radius: .7rem;
+                -moz-border-radius: .7rem;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                width: 50%;
+                
+            }
+
+            .search-box {
+                margin-left: 1rem;
+                width: 100%;
+            }
+            .search-box input[type="text"] {
+                outline: none;
+                font-size: 1.8rem;
+                
+                border: 1px solid #FFF;
+
+                width: 100%;
+            }
+
+            ::placeholder, /* Chrome, Firefox, Opera, Safari */
+            ::-ms-input-placeholder, /* Internet Explorer 10-11 */
+            :-ms-input-placeholder /* Microsoft Edge */ {
+                color: #cecece;
+                opacity: .1;
+            }
+
+            .result-box {
+
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div class="search-container">
+                <div class="search-icon">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 490.4 490.4" style="enable-background:new 0 0 490.4 490.4; fill: #c4c5cf; width: 1.8rem;" xml:space="preserve">
+                        <g>
+                            <path d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
+                                s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
+                                M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="search-box">
+                    <input type="text" placeholder="Search for anything" />
+                </div>
+                <div class="result-box">
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const BASE_URL = "https://api.yelp.com/v3";
+            function errorHandler(err) {
+                console.log(err);
+            }
+
+            async function get(url) {
+                try {
+                    const data = await fetch(url, {
+                        headers: {
+                            "Authorization": "Bearer P4AoJYUkv91ZEUnfET5b4e9pvlVXWjrMeChk9_GOJpyvLq1l8do5TNtlEZC6u7H6lwe7MARfbeGl9MI-GfluiQ-sptB0vQsZZySI_kf1O9O1zqp4abswdRCvIlBeYnYx",
+                            "User-Agent": "nodejs"
+                        }
+                    });
+                    return data;
+                } catch(ex) {
+                    errorHandle(ex);
+                }
+            }
+
+            (async() => {
+                console.log(await get("https://api.yelp.com/v3/autocomplete?text=del&latitude=37.786882&longitude=-122.399972"));
+            })();
+        </script>
+    </body>
+</html>
