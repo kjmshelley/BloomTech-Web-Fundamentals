@@ -17,9 +17,15 @@
             div,
             h1,h2,h3,h4,h5,h6,
             p,
+            a,
             input [input="text"] {
                 margin: 0;
                 padding: 0;
+            }
+
+            a, a:link {
+                text-decoration: none;
+                color: #000;
             }
 
             html, body {
@@ -31,12 +37,12 @@
                 height: 100%;
 
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
             }
 
-            .search-container {
+            .container {
                 background-color: #FFF;
                 padding: 1.5rem;
                 
@@ -44,12 +50,16 @@
                 -webkit-border-radius: .7rem;
                 -moz-border-radius: .7rem;
 
+                width: 50%;
+            }
+
+            .search-container {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
 
-                width: 50%;
-                
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
             }
 
             .search-box {
@@ -73,13 +83,90 @@
             }
 
             .result-box {
+                /*display: none;*/
+                background-color: #FFF;
+                
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                border-top: 1px solid #e9eaf0;
 
+                height: 45%;
+                overflow-y: auto;
+            }
+
+            .result-box-section {
+                margin-bottom: 1.2rem;
+            }
+
+            .result-box-title {
+                font-size: 1.2em;
+                color: #adaaaa;
+                padding-left: .8rem;
+            }
+
+            .result-box-items {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .result-box-item  {
+                font-size: 1.3rem;
+                padding: .8rem;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;;
+                border-radius: .7rem;
+                -webkit-border-radius: .7rem;
+                -moz-border-radius: .7rem;
+
+                cursor: pointer;
+            }
+
+            .result-box-item:hover {
+                background-color: #e9eaf0;
+            }
+
+            .show-more {
+                color: #b7b2b2
+            }
+
+            .show {
+                display: block;
+            }
+
+            .show-flex {
+                display: flex;
+            }
+
+            .label {
+                padding: 0.2rem 0.8rem;
+                font-size: 1.1rem;
+                border-radius: .5rem;
+                -webkit-border-radius: .5rem;
+                -moz-border-radius: .5rem;
+            }
+
+            .gray {
+                color: #FFF;
+                background-color: #6e7388;
+            }
+
+            .blue {
+                color: #FFF;
+                background-color: #2aa2ff;
+            }
+
+            .green {
+                color: #FFF;
+                background-color: #73886E;
             }
         </style>
     </head>
     <body>
         <div id="app">
-            <div class="search-container">
+            <div class="container search-container">
                 <div class="search-icon">
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 490.4 490.4" style="enable-background:new 0 0 490.4 490.4; fill: #c4c5cf; width: 1.8rem;" xml:space="preserve">
@@ -93,35 +180,126 @@
                 <div class="search-box">
                     <input type="text" placeholder="Search for anything" />
                 </div>
-                <div class="result-box">
-
+            </div>
+            <div class="container result-box">
+                <div class="result-box-section">
+                    <p class="result-box-title">Do you mean?</p>
+                    <ul class="result-box-items">
+                        <li class="result-box-item">
+                            <div>What sMening?</div>
+                        </li>
+                        <li class="result-box-item">
+                            <div>What Meaning?</div>
+                            <div><span class="label gray">businesses</span></div>
+                        </li>
+                        <li class="result-box-item">
+                            <div>What should you do?</div>
+                            <div><span class="label green">categories</span></div>
+                        </li>
+                        <li class="result-box-item show-more">
+                            <div>Show more...</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="result-box-section">
+                    <p class="result-box-title">Category</p>
+                    <ul class="result-box-items">
+                        <li class="result-box-item">
+                            <div>What Category</div>
+                        </li>
+                        <li class="result-box-item">
+                            <div>What should you do?</div>
+                        </li>
+                        <li class="result-box-item">
+                            <div>What should you do?</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="result-box-section">
+                    <p class="result-box-title">Business</p>
+                    <ul class="result-box-items">
+                        <li class="result-box-item">
+                            <div>What should you do?</div>
+                        </li>
+                        <li class="result-box-item">
+                            <div>What should you do?</div>
+                        </li>
+                        <li class="result-box-item">
+                            <div>What should you do?</div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+        
 
+        <script src="/yelp.js"></script>
         <script>
-            const BASE_URL = "https://api.yelp.com/v3";
-            function errorHandler(err) {
-                console.log(err);
-            }
+            /* controls */
+            const searchInput = document.querySelector(".search-box input");
+            const resultBox = document.querySelector(".result-box");
+            const resultBoxItems = document.querySelector(".result-box-items");
 
-            async function get(url) {
-                try {
-                    const data = await fetch(url, {
-                        headers: {
-                            "Authorization": "Bearer P4AoJYUkv91ZEUnfET5b4e9pvlVXWjrMeChk9_GOJpyvLq1l8do5TNtlEZC6u7H6lwe7MARfbeGl9MI-GfluiQ-sptB0vQsZZySI_kf1O9O1zqp4abswdRCvIlBeYnYx",
-                            "User-Agent": "nodejs"
-                        }
-                    });
-                    return data;
-                } catch(ex) {
-                    errorHandle(ex);
+            const suggestionSection = document.querySelector(".result-box > div > ul");
+            const categorySection = document.querySelector(".result-box :nth-child(2) > ul");
+            const businessSection = document.querySelector(".result-box :last-child > ul");
+
+            function getColorByType (type) {
+                switch(type) {
+                    case "terms":
+                        return "blue";
+                    case "categories":
+                        return "green";
+                    case "business":
+                        return "gray";
+                    default:
+                        return "";
                 }
             }
 
-            (async() => {
-                console.log(await get("https://api.yelp.com/v3/autocomplete?text=del&latitude=37.786882&longitude=-122.399972"));
-            })();
+            function generateSuggestionHTML(arr) {
+                const list = arr.map(a => {
+                    return `<li class="result-box-item">
+                        <div>
+                            <a href="/search.html?${a.type}=${a.text}">${a.text}</a>
+                        </div>
+                        <div><span class="label ${getColorByType(a.type)}">${a.type}</span></div>
+                    </li>`;
+                }).join("");
+
+                return list;
+            }
+
+            function convertSuggestionArray (arr, type, prop) {
+                const temp = arr[type].map(a => {
+                    return {
+                        type: type,
+                        text: a[prop]
+                    };
+                });
+
+                if (temp.length === 0) return temp;
+
+                temp.sort((a, b) => {
+                    if (a.text < b.text) return -1;
+                    if (a.text > b.text) return -1;
+                    return 0;
+                });
+                return temp;
+            }
+
+            searchInput.addEventListener("keypress", async (evt) => {
+                if (searchInput.value.length < 3) return;
+                const data = await autocomplete(searchInput.value);
+                if (data.data.length === 0) return;
+                suggestionSection.innerHTML =  generateSuggestionHTML(convertSuggestionArray(data.data, "terms", "text"));
+                categorySection.innerHTML = generateSuggestionHTML(convertSuggestionArray(data.data, "categories", "title"));
+                businessSection.innerHTML = generateSuggestionHTML(convertSuggestionArray(data.data, "businesses", "text"));
+            });
+
+
+
+            
         </script>
     </body>
 </html>
